@@ -1,0 +1,12 @@
+services:
+  zeimanyusu:
+    image: ghcr.io/svsticky/sloppy-clanker:latest
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - yusu-data:/data
+    restart: unless-stopped
+
+volumes:
+  yusu-data:
