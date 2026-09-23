@@ -27,13 +27,15 @@ docker compose exec zeimanyusu node reset.mjs
 
 ## Automatisch bouwen
 
-Bij elke push naar `main` bouwt `.github/workflows/docker.yml` de image en zet hem op
-`ghcr.io/svsticky/sloppy-clanker` met de tags `latest`, `main` en `sha-<commit>`.
+Bij elke push naar `main` of `development` bouwt `.github/workflows/docker.yml` de image
+(`ghcr.io/svsticky/sloppy-clanker:<branch>`) en triggert daarna via Aas een deploy op de server
+(role `zeimanyusu` in svsticky/sadserver):
 
-Op de server:
+| Branch        | Omgeving   | Domein                 |
+|---------------|------------|------------------------|
+| `main`        | production | zeimanyusu.today       |
+| `development` | staging    | dev.zeimanyusu.today   |
 
-```sh
-docker compose pull && docker compose up -d
-```
-
-Is de package op GitHub privé, log dan eerst in met `docker login ghcr.io`.
+Nodig in de GitHub-repo, per environment (`production` en `development`):
+- variable `AAS_URL`: `https://aas.svsticky.nl/webhook/zeimanyusu-deploy` (staging: `aas.dev.svsticky.nl`)
+- secret `AAS_PRE_SHARED_KEY`: dezelfde waarde als `secret_zeimanyusu.aas_pre_shared_key` in Bitwarden

@@ -1,6 +1,6 @@
 services:
   zeimanyusu:
-    image: ghcr.io/svsticky/sloppy-clanker:latest
+    image: ghcr.io/svsticky/sloppy-clanker:main
     build: .
     ports:
       - "3000:3000"
